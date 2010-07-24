@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: GeekShed Embed
-Plugin URI: http://geekshed.net/
+Plugin URI: http://2skewed.net/plugins/geekshed-embed/
 Description: Creates a shortcode to embed a <a href="http://geekshed.net">GeekShed IRC</a> channel (chatroom) into a page/post
 Author: Ryan Murphy
 Author URI: http://2skewed.net
