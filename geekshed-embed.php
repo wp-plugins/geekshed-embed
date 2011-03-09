@@ -21,7 +21,7 @@ THIS SOFTWARE IS PROVIDED `AS IS` AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDI
 */
 
 //include the shortcode file
-require_once( 'shortcode.php' );
+include( 'shortcode.php' );
 
 
 if ( is_admin() ) {
@@ -65,9 +65,9 @@ function gse_settings_page() { ?>
 				<tr valign='top'>
 					<th scope='row'>Channel Name</th>
 					<td>
-						<?php $gse_channels = get_option("gse_channel_name");
-						$gse_channels = preg_replace('/^/','#', $gse_channels);
-						$gse_channels = str_replace('%2C%23', ',#', $gse_channels);
+						<?php $gse_channels = get_option( 'gse_channel_name' );
+						$gse_channels = preg_replace( '/^/','#', $gse_channels );
+						$gse_channels = str_replace( '%2C%23', ',#', $gse_channels );
 						?>
 						<input type='text' name='gse_channel_name' value='<?php echo $gse_channels ?>' />
 					</td>
@@ -87,25 +87,25 @@ function gse_settings_page() { ?>
 				<tr valign='top'>
 					<th scope='row'>Hide join/part/quit/mode messages</th>
 					<td>
-						<input type='checkbox' name='gse_chat_only' <?php if( get_option(' gse_chat_only ') == true ) echo " checked='checked' "; ?> />
+						<input type='checkbox' name='gse_chat_only' <?php if( get_option( 'gse_chat_only' ) == true ) echo " checked='checked' "; ?> />
 					</td>
 				</tr>
 				<tr valign='top'>
 					<th scope='row'>Restrict clients to your channel only</th>
 					<td>
-						<input type='checkbox' name='gse_restricted' <?php if( get_option( "gse_restricted" ) == true) echo "checked='checked' "; ?> />
+						<input type='checkbox' name='gse_restricted' <?php if( get_option( 'gse_restricted' ) == true) echo "checked='checked' "; ?> />
 					</td>
 				</tr>
 				<tr valign='top'>
 					<th scope='row'>Show usercount badge</th>
 					<td>
-						<input type='checkbox' name='gse_user_badge' <?php if( get_option( "gse_user_badge" ) == true) echo "checked='checked' "; ?> />
+						<input type='checkbox' name='gse_user_badge' <?php if( get_option( 'gse_user_badge' ) == true) echo "checked='checked' "; ?> />
 					</td>
 				</tr>
 				<tr valign='top'>
 					<th scope='row'>Background Color</th>
 					<td>
-						<input type='text' name='gse_background_color' value='<?php echo get_option(" gse_background_color" ); ?>' />
+						<input type='text' name='gse_background_color' value='<?php echo get_option( "gse_background_color" ); ?>' />
 					</td>
 				</tr>
 				<tr valign='top'>
@@ -132,7 +132,7 @@ function gse_settings_page() { ?>
 
 function gse_display_notes() { ?>
 	<h3>Notes</h3>
-	<div class='toggle' style="max-width:650px;text-align:justify;">
+	<div class='toggle' style='max-width:650px;text-align:justify;'>
 		<p>At the very minimum, please ensure that the channel name field contains at least one channel name. Without this, the plugin will not work correctly! You should still go through the others and make them what you want to be. This will ensure the shortcodes work correctly.</p>
 		<p>In addition to the page dropdown in the settings, the plugin includes two shortcodes for embedding the chat: <code>[geekshed]</code> and <code>[geekshed_chat]</code>. <code>[geekshed]</code> is from the first version, and although it still works, it maybe removed in a future update. The prefered way to embed a chatroom is to edit the settings below, and either set a page or use <code>[geekshed_chat]</code>, as it allows for more options to be set.</p>
 		<p>Special note for Width and Height: the recommended minimum height is 375, and the recommended width is 500. If you have selected to have the userbadge displayed, you should add 45 to the height (so minimum of 420), as that is the size of the userbadge. If the width is set less than 500, part of the nicklist will be cut off.</p>
@@ -142,7 +142,7 @@ function gse_display_notes() { ?>
 function gse_display_usage() { ?>
 
 	<h3>Usage</h3>
-	<div class='toggle' style="max-width:650px;text-align:justify;">
+	<div class='toggle' style='max-width:650px;text-align:justify;'>
 		<h4>To Embed A Chat</h4>
 		<p>The first thing you should do is create the page you want the chat to appear on. All you need to do if create a title for it - any content you place on it will be overwritten. Next, on this page, fill out the channel(s) you want visitors to connect to (#channel1,#channel2,#channelN), and select the page from the dropdown. You should fill out the remainder of the fields as well when you get a chance.</p>
 		<p>If you would rather use the shortcode instead of selected a page, fill out the settings, leaving the page as `Select`. Next, when you go to create the page, use the [geekshed_chat] shortcode. The settings for it will be pulled from the database.</p>
@@ -173,17 +173,18 @@ function gse_chat_page( $content ) {
 		return $content;
 	}
 }
-	add_filter( 'the_content', 'gse_chat_page' );
+
+add_filter( 'the_content', 'gse_chat_page' );
 	
 function gse_display_chat() {
-$gse_channel	  = get_option( 'gse_channel_name' );
-		$gse_width		  = get_option( 'gse_width' );
-		$gse_height		  = ( 'on' == get_option( 'gse_height' ) ) ? '1' : '';
-		$gse_chatOnly	  = ( 'on' == get_option( 'gse_chat_only' ) ) ? '1' : '';
-		$gse_restricted	  = ( 'on' == get_option( 'gse_restricted' ) ) ? '1': '';
-		$gse_userbadge    = ( 'on' == get_option( 'gse_user_badge' ) ) ? '1': '';
-		$gse_bgColor	  = get_option( 'gse_background_color' );
-		$gse_headerColor  = get_option( 'gse_header_color' );
+	$gse_channel	  = get_option( 'gse_channel_name' );
+	$gse_width		  = get_option( 'gse_width' );
+	$gse_height		  = ( 'on' == get_option( 'gse_height' ) ) ? '1' : '';
+	$gse_chatOnly	  = ( 'on' == get_option( 'gse_chat_only' ) ) ? '1' : '';
+	$gse_restricted	  = ( 'on' == get_option( 'gse_restricted' ) ) ? '1': '';
+	$gse_userbadge    = ( 'on' == get_option( 'gse_user_badge' ) ) ? '1': '';
+	$gse_bgColor	  = get_option( 'gse_background_color' );
+	$gse_headerColor  = get_option( 'gse_header_color' );
 	
 	
 		$gse_chat1 = '<div name="flashchat" style="height: '.$gse_height.'px; width: '.$gse_width.'px; background-color: #FFFFFF;"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="100%" height="100%" salign="tl" wmode="transparent"><param name="allowScriptAccess" value="sameDomain" /><param name="movie" value="';
@@ -192,7 +193,7 @@ $gse_channel	  = get_option( 'gse_channel_name' );
 	
 		$gse_embed_url = 'http://flashirc.geekshed.net/tflash.php?embed=1&amp;joinonconnect='.$gse_channel.'&amp;chatonly='.$gse_chatOnly.'&amp;restricted='.$gse_restricted.'&amp;key=&amp;nick=&amp;bgcolor='.$gse_bgColor.'&amp;headercolor='.$gse_headerColor;
 		
-		if( $gse_userbadge ) $gse_chat4= '<div align="center">	<img src="http://usercount.geekshed.net?chan='.$gse_channel.'" />	</div>';
+		if( $gse_userbadge ) $gse_chat4 = '<div align="center">	<img src="http://usercount.geekshed.net?chan='.$gse_channel.'" />	</div>';
 		else $gse_chat4 = '';
 		
 		return $gse_chat1 . $gse_embed_url . $gse_chat2 . $gse_embed_url . $gse_chat3 . $gse_chat4 . '</div>';
