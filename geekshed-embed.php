@@ -44,6 +44,31 @@ function register_gse_settings() {
 	register_setting( 'gse_settings', 'gse_background_color', 'wp_filter_nohtml_kses' );
 	register_setting( 'gse_settings', 'gse_header_color', 'wp_filter_nohtml_kses' );
 	register_setting( 'gse_settings', 'gse_chat_page' );
+	update_option( 'gse_version', '2.0' );
+}
+
+register_deactivation_hook(__FILE__, 'gse_deactivate');
+
+function gse_deactivate() {
+	unregister_setting( 'gse_settings', 'gse_channel_name', 'gse_validate_channel' );
+	unregister_setting( 'gse_settings', 'gse_width', 'intval' );
+	unregister_setting( 'gse_settings', 'gse_height', 'intval' );
+	unregister_setting( 'gse_settings', 'gse_chat_only' );
+	unregister_setting( 'gse_settings', 'gse_restricted' );
+	unregister_setting( 'gse_settings', 'gse_user_badge' );
+	unregister_setting( 'gse_settings', 'gse_background_color', 'wp_filter_nohtml_kses' );
+	unregister_setting( 'gse_settings', 'gse_header_color', 'wp_filter_nohtml_kses' );
+	unregister_setting( 'gse_settings', 'gse_chat_page' );
+	delete_option( 'gse_channel_name' );
+	delete_option( 'gse_width' );
+	delete_option( 'gse_height' );
+	delete_option( 'gse_chat_only' );
+	delete_option( 'gse_restricted' );
+	delete_option( 'gse_user_badge' );
+	delete_option( 'gse_background_color' );
+	delete_option( 'gse_header_color' );
+	delete_option( 'gse_chat_page' );
+	delete_option( 'gse_version');
 }
 
 function gse_setup_notice() {
@@ -65,11 +90,11 @@ function gse_settings_page() { ?>
 				<tr valign='top'>
 					<th scope='row'>Channel Name</th>
 					<td>
-						<?php $gse_channels = get_option( 'gse_channel_name' );
-						$gse_channels = preg_replace( '/^/','#', $gse_channels );
-						$gse_channels = str_replace( '%2C%23', ',#', $gse_channels );
+						<?php $gse_channel_name = get_option( 'gse_channel_name' );
+						$gse_channel_name = preg_replace( '/^/','#', $gse_channel_name );
+						$gse_channel_name = str_replace( '%2C%23', ',#', $gse_channel_name );
 						?>
-						<input type='text' name='gse_channel_name' value='<?php echo $gse_channels ?>' />
+						<input type='text' name='gse_channel_name' value='<?php echo $gse_channel_name ?>' />
 					</td>
 				</tr>
 				<tr valign='top'>
@@ -87,19 +112,19 @@ function gse_settings_page() { ?>
 				<tr valign='top'>
 					<th scope='row'>Hide join/part/quit/mode messages</th>
 					<td>
-						<input type='checkbox' name='gse_chat_only' <?php if( get_option( 'gse_chat_only' ) == true ) echo " checked='checked' "; ?> />
+						<input type='checkbox' name='gse_chat_only' <?php if( get_option( 'gse_chat_only' ) == 'on' ) echo " checked='checked' "; ?> />
 					</td>
 				</tr>
 				<tr valign='top'>
 					<th scope='row'>Restrict clients to your channel only</th>
 					<td>
-						<input type='checkbox' name='gse_restricted' <?php if( get_option( 'gse_restricted' ) == true) echo "checked='checked' "; ?> />
+						<input type='checkbox' name='gse_restricted' <?php if( get_option( 'gse_restricted' ) == 'on') echo "checked='checked' "; ?> />
 					</td>
 				</tr>
 				<tr valign='top'>
 					<th scope='row'>Show usercount badge</th>
 					<td>
-						<input type='checkbox' name='gse_user_badge' <?php if( get_option( 'gse_user_badge' ) == true) echo "checked='checked' "; ?> />
+						<input type='checkbox' name='gse_user_badge' <?php if( get_option( 'gse_user_badge' ) == 'on') echo "checked='checked' "; ?> />
 					</td>
 				</tr>
 				<tr valign='top'>
@@ -185,34 +210,36 @@ function gse_display_chat() {
 	$gse_userbadge    = ( 'on' == get_option( 'gse_user_badge' ) ) ? '1': '';
 	$gse_bgColor	  = get_option( 'gse_background_color' );
 	$gse_headerColor  = get_option( 'gse_header_color' );
-
-	$gse_chat1 = '<div name="flashchat" style="height: '.$gse_height.'px; width: '.$gse_width.'px; background-color: #FFFFFF;"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="100%" height="100%" salign="tl" wmode="transparent"><param name="allowScriptAccess" value="sameDomain" /><param name="movie" value="';
-	$gse_chat2 = '"><param name="quality" value="high"><embed src="';
-	$gse_chat3 =  '" allowScriptAccess="always" allowNetworking="all" quality="high" wmode="transparent" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" width="100%" height="100%" salign="tl"></embed></object>';
-	$gse_embed_url = 'http://flashirc.geekshed.net/tflash.php?embed=1&amp;joinonconnect='.$gse_channel.'&amp;chatonly='.$gse_chatOnly.'&amp;restricted='.$gse_restricted.'&amp;key=&amp;nick=&amp;bgcolor='.$gse_bgColor.'&amp;headercolor='.$gse_headerColor;
-
-	if( $gse_userbadge ) $gse_chat4 = '<div align="center">	<img src="http://usercount.geekshed.net?chan='.$gse_channel.'" />	</div>';
-	else $gse_chat4 = '';
-
-	return $gse_chat1 . $gse_embed_url . $gse_chat2 . $gse_embed_url . $gse_chat3 . $gse_chat4 . '</div>';
+	
+	
+		$gse_chat1 = '<div name="flashchat" style="height: '.$gse_height.'px; width: '.$gse_width.'px; background-color: #FFFFFF;"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="100%" height="100%" salign="tl" wmode="transparent"><param name="allowScriptAccess" value="sameDomain" /><param name="movie" value="';
+		$gse_chat2 = '"><param name="quality" value="high"><embed src="';
+		$gse_chat3 =  '" allowScriptAccess="always" allowNetworking="all" quality="high" wmode="transparent" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" width="100%" height="100%" salign="tl"></embed></object>';
+	
+		$gse_embed_url = 'http://flashirc.geekshed.net/tflash.php?embed=1&amp;joinonconnect='.$gse_channel.'&amp;chatonly='.$gse_chatOnly.'&amp;restricted='.$gse_restricted.'&amp;key=&amp;nick=&amp;bgcolor='.$gse_bgColor.'&amp;headercolor='.$gse_headerColor;
+		
+		if( $gse_userbadge ) $gse_chat4 = '<div align="center">	<img src="http://usercount.geekshed.net?chan='.$gse_channel.'" />	</div>';
+		else $gse_chat4 = '';
+		
+		return $gse_chat1 . $gse_embed_url . $gse_chat2 . $gse_embed_url . $gse_chat3 . $gse_chat4 . '</div>';
 }
 
 function gse_display_js() { ?>
 <script type="text/javascript">
-	// Andy Langton's show/hide/mini-accordion - updated 23/11/2009
-	// Latest version @ http://andylangton.co.uk/jquery-show-hide
-	// License
-	// Comments and extra whitespace removed. Uses <button> instead of <a>
-	jQuery(document).ready(function() {
-		var is_visible = false;
-		jQuery('.toggle').prev().append(' <button class="toggleLink button-secondary">Show/Hide</button>');
-		jQuery('.toggle').hide();
-		jQuery('button.toggleLink').click(function() {
-			is_visible = !is_visible;
-			jQuery(this).parent().next('.toggle').toggle('slow');
-			return false;
+		// Andy Langton's show/hide/mini-accordion - updated 23/11/2009
+		// Latest version @ http://andylangton.co.uk/jquery-show-hide
+		// License
+		// Comments and extra whitespace removed. Uses <button> instead of <a>
+		jQuery(document).ready(function() {
+			var is_visible = false;
+			jQuery('.toggle').prev().append(' <button class="toggleLink button-secondary">Show/Hide</button>');
+			jQuery('.toggle').hide();
+			jQuery('button.toggleLink').click(function() {
+				is_visible = !is_visible;
+				jQuery(this).parent().next('.toggle').toggle('slow');
+				return false;
+			});
 		});
-	});
-</script>
+		</script>
 <?php }
 ?>
