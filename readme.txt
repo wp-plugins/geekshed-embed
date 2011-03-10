@@ -4,7 +4,7 @@ Contributors: RyanMurphy
 Tags: geekshed, irc, chat
 Requires at least: 2.7.0
 Tested up to: 3.1
-Stable tag: 1.0
+Stable tag: 2.0
 
 Easily add a GeekShed IRC channel (chat room) onto your site. Also includes shortcodes for other items provided by GeekShed
 
@@ -24,7 +24,7 @@ Comments, questions, suggestions? Post them at
 
 = 2.0 =
 * Added options page
-* Shortcode no longer needed (but still included for backwards compatability), provided that a page is specified in the options.
+* Shortcode no longer needed to display the chat box (but still included for backwards compatability), provided that a page is specified in the options.
 * In addition to old shortcode, a new one is included that will use the options from the database
 * Added user list, userbadge shortcodes
 * Fixed error in embed code
