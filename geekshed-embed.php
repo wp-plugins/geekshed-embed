@@ -5,7 +5,7 @@ Plugin URI: http://geekshed.net/
 Description: Creates a shortcode to embed a <a href='http://geekshed.net'>GeekShed IRC</a> channel (chatroom) into a page/post
 Author: Ryan Murphy
 Author URI: http://2skewed.net
-Version: 2.0-beta
+Version: 2.0
 */
 
 /*
