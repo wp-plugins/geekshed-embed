@@ -3,7 +3,7 @@
 Contributors: RyanMurphy
 Tags: geekshed, irc, chat
 Requires at least: 2.7.0
-Tested up to: 3.1
+Tested up to: 3.2
 Stable tag: 2.0
 
 Easily add a GeekShed IRC channel (chat room) onto your site. Also includes shortcodes for other items provided by GeekShed
