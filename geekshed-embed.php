@@ -5,7 +5,7 @@ Plugin URI: http://geekshed.net/
 Description: Creates a shortcode to embed a <a href='http://geekshed.net'>GeekShed IRC</a> channel (chatroom) into a page/post
 Author: Ryan Murphy
 Author URI: http://2skewed.net
-Version: 2.0
+Version: 2.0.1
 */
 
 /*
@@ -204,7 +204,7 @@ add_filter( 'the_content', 'gse_chat_page' );
 function gse_display_chat() {
 	$gse_channel	  = get_option( 'gse_channel_name' );
 	$gse_width		  = get_option( 'gse_width' );
-	$gse_height		  = ( 'on' == get_option( 'gse_height' ) ) ? '1' : '';
+	$gse_height		  = get_option( 'gse_height' );
 	$gse_chatOnly	  = ( 'on' == get_option( 'gse_chat_only' ) ) ? '1' : '';
 	$gse_restricted	  = ( 'on' == get_option( 'gse_restricted' ) ) ? '1': '';
 	$gse_userbadge    = ( 'on' == get_option( 'gse_user_badge' ) ) ? '1': '';
