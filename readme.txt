@@ -3,8 +3,8 @@
 Contributors: RyanMurphy
 Tags: geekshed, irc, chat
 Requires at least: 2.7.0
-Tested up to: 3.1
-Stable tag: 2.0
+Tested up to: 3.4
+Stable tag: 2.0.1
 
 Easily add a GeekShed IRC channel (chat room) onto your site. Also includes shortcodes for other items provided by GeekShed
 
@@ -21,6 +21,9 @@ Comments, questions, suggestions? Post them at
 1. Visit the plugin's options page, and set the options (and view usage instructions).
 
 == Changelog ==
+
+= 2.0.1 =
+* Height is not an on/off option.
 
 = 2.0 =
 * Added options page
